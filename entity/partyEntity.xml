@@ -6,9 +6,6 @@
     <entity entity-name="Party" package="mantle.party">
         <field name="partyId" type="id" is-pk="true"/>
         <field name="partyTypeId" type="id"/>
-        <field name="firstName" type="text-medium"/>
-        <field name="lastLast" type="text-medium"/>
-        <field name="status" type="text-short"/>
 <!--        === relationship ===-->
         <relationship type="one" related="moqui.basic.Enumeration" short-alias="type">
             <key-map field-name="partyTypeId"/>
@@ -35,13 +32,13 @@
         <field name="partyId" type="id" is-pk="true"/>
         <field name="firstName" type="text-medium"/>
         <field name="lastName" type="text-medium"/>
-        <field name="age" type="number-integer"/>
+        <field name="birthDate" type="date"/>
         <relationship type="one" related="mental.party.Party"/>
     </entity>
 
     <entity entity-name="Organization" package="mantle.party">
         <field name="partyId" type="id" is-pk="true"/>
-        <field name="company" type="text-medium"/>
+        <field name="organizationName" type="text-medium"/>
         <relationship type="one" related="mantle.party.Party"/>
     </entity>
     
