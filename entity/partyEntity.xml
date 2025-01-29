@@ -7,13 +7,16 @@
         <field name="partyId" type="id" is-pk="true"/>
         <field name="partyTypeId" type="id"/>
 
-        <relationship type="one-nofk" related="Person"/>
-        <relationship type="one-nofk" related="Organization"/>
+        <relationship type="one-nofk" related="moqui.party.Person" short-alias="Person"/>
+        <relationship type="one-nofk" related="moqui.party.Organization" short-alias="Organization"/>
 <!--        === relationship ===-->
         <relationship type="one" title="PartyType" related="moqui.basic.Enumeration" short-alias="type">
             <key-map field-name="partyTypeId"/>
         </relationship>
 
+        <relationship type="many" title="PartyRole" related="moqui.party.PartyRole">
+            <key-map field-name="partyId"/>
+        </relationship>
         <seed-data>
 <!--            seed data party type -->
             <moqui.basic.EnumurationType description="Party Type" enumTypeId="PartyType"/>
@@ -25,7 +28,7 @@
             <Person partyId="_NA_" firstName="Not" lastName="Applicable"/>
         </seed-data>
 <!--       ===== Master Entity =====-->
-    <master name="basic">
+    <master name="default">
         <detail relationship="Organization"/>
         <detail relationship="Person"/>
         <detail relationship="PartyRole"/>
@@ -72,4 +75,5 @@
             <moqui.basic.Enumeration description="Customer" enumId="Customer" enumTypeId="roleTypeId"/>
         </seed-data>
     </entity>
+
 </entities>
