@@ -3,13 +3,17 @@
           xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
 <!--    ==================== PARTY ENTITY ======================-->
 <!--    Assignment 1 Party-->
-    <entity entity-name="Party" package="mantle.party">
+    <entity entity-name="Party" package="moqui.party">
         <field name="partyId" type="id" is-pk="true"/>
         <field name="partyTypeId" type="id"/>
+
+        <relationship type="one-nofk" related="Person"/>
+        <relationship type="one-nofk" related="Organization"/>
 <!--        === relationship ===-->
-        <relationship type="one" related="moqui.basic.Enumeration" short-alias="type">
+        <relationship type="one" title="PartyType" related="moqui.basic.Enumeration" short-alias="type">
             <key-map field-name="partyTypeId"/>
         </relationship>
+
         <seed-data>
 <!--            seed data party type -->
             <moqui.basic.EnumurationType description="Party Type" enumTypeId="PartyType"/>
@@ -24,22 +28,48 @@
     <master name="basic">
         <detail relationship="Organization"/>
         <detail relationship="Person"/>
+        <detail relationship="PartyRole"/>
     </master>
 
     </entity>
 
-    <entity entity-name="Person" package="mantle.party">
-        <field name="partyId" type="id" is-pk="true"/>
-        <field name="firstName" type="text-medium"/>
+<!--    === PERSON ENTITY ===-->
+    <entity entity-name="Person" package="moqui.party">
+        <field name="partyId" type="id" is-pk="true" not-null="true"/>
+        <field name="firstName" type="text-medium" not-null="true"/>
         <field name="lastName" type="text-medium"/>
         <field name="birthDate" type="date"/>
-        <relationship type="one" related="mental.party.Party"/>
+        <relationship type="one" related="moqui.party.Party">
+            <key-map field-name="partyId" related="partyId"/>
+        </relationship>
     </entity>
 
-    <entity entity-name="Organization" package="mantle.party">
+<!--    === ORGANIZATION ENTITY ===  -->
+    <entity entity-name="Organization" package="moqui.party">
         <field name="partyId" type="id" is-pk="true"/>
-        <field name="organizationName" type="text-medium"/>
-        <relationship type="one" related="mantle.party.Party"/>
+        <field name="organizationName" type="text-medium" not-null="true"/>
+        <relationship type="one" related="moqui.party.Party">
+            <key-map field-name="partyId" related="partyId"/>
+        </relationship>
     </entity>
-    
+
+<!--    === PARTY ROLE ENTITY ===  -->
+    <entity entity-name="PartyRole" package="moqui.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="roleTypeId" type="text-medium"/>
+
+        <relationship type="many" related="moqui.party.Party">
+            <key-map field-name="partyId" related="partyId"/>
+        </relationship>
+
+        <relationship type="one" related="moqui.basic.Enumeration">
+            <key-map field-name="roleTypeId"/>
+        </relationship>
+
+        <seed-data>
+            <moqui.basic.EnumerationType description="roleTypeId" enumTypeId="roleTypeId"/>
+            <moqui.basic.Enumeration description="Employee" enumId="Employee" enumTypeId="roleTypeId"/>
+            <moqui.basic.Enumeration description="Customer" enumId="Customer" enumTypeId="roleTypeId"/>
+        </seed-data>
+    </entity>
 </entities>
