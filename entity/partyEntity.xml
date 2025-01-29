@@ -23,7 +23,26 @@
             <Party partyId="_NA_" partyTypeId="PtyPerson"/>
             <Person partyId="_NA_" firstName="Not" lastName="Applicable"/>
         </seed-data>
+<!--       ===== Master Entity =====-->
+    <master name="basic">
+        <detail relationship="Organization"/>
+        <detail relationship="Person"/>
+    </master>
+
     </entity>
 
+    <entity entity-name="Person" package="mantle.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="firstName" type="text-medium"/>
+        <field name="lastName" type="text-medium"/>
+        <field name="age" type="number-integer"/>
+        <relationship type="one" related="mental.party.Party"/>
+    </entity>
+
+    <entity entity-name="Organization" package="mantle.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="company" type="text-medium"/>
+        <relationship type="one" related="mantle.party.Party"/>
+    </entity>
     
 </entities>
